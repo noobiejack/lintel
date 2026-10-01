@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lintel — Construction software for projects that cross borders</title>
+<meta name="description" content="Lintel builds planning, cost, field and handover software for contractors, developers and owners in the Americas, Europe and Africa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Lintel — construction software. Fonts load from Google Fonts; fallbacks included. */
+:root {
+  --slab: #e6e9ea;
+  --paper: #f8f9f9;
+  --ink: #16222c;
+  --steel: #3a5568;
+  --line: #c3ccd1;
+  --survey: #f4c20d;
+  --head: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --max: 1200px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--survey); outline-offset: 3px; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+
+h1, h2, h3 { font-family: var(--head); font-weight: 600; line-height: 1.04; letter-spacing: -0.015em; margin: 0; }
+h1 { font-size: clamp(2.8rem, 6.4vw, 5.2rem); max-width: 13ch; }
+h2 { font-size: clamp(2rem, 4vw, 3rem); max-width: 18ch; }
+h3 { font-size: 1.35rem; letter-spacing: -0.005em; line-height: 1.2; }
+p { margin: 0; max-width: 62ch; }
+
+/* Header */
+.site-header { border-bottom: 1px solid var(--line); background: var(--paper); position: sticky; top: 0; z-index: 10; }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font: 600 1.5rem/1 var(--head); letter-spacing: -0.01em; }
+.brand svg { width: 34px; height: 22px; }
+nav ul { display: flex; gap: 34px; list-style: none; margin: 0; padding: 0; }
+nav a { text-decoration: none; font-size: 0.95rem; padding: 6px 0; border-bottom: 2px solid transparent; }
+nav a:hover { border-color: var(--survey); }
+.btn { display: inline-block; text-decoration: none; font: 600 0.98rem/1 var(--body); padding: 16px 26px; border: 2px solid var(--ink); background: var(--ink); color: var(--paper); transition: background .15s, color .15s; }
+.btn:hover { background: var(--survey); color: var(--ink); border-color: var(--survey); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.site-header .btn { padding: 12px 20px; }
+
+/* Hero */
+.hero { padding: 88px 0 96px; background:
+  linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% 56px,
+  linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 56px 100%;
+  background-color: var(--slab); border-bottom: 1px solid var(--line); }
+.hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+.hero p.lead { font-size: 1.22rem; margin: 28px 0 36px; color: var(--steel); }
+.hero .actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.drawing { background: var(--paper); border: 2px solid var(--ink); padding: 18px; }
+.drawing figcaption { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 0.82rem; color: var(--steel); }
+.drawing .status { display: inline-flex; align-items: center; gap: 8px; }
+.drawing .status::before { content: ""; width: 9px; height: 9px; background: var(--survey); border: 1px solid var(--ink); border-radius: 50%; animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; } }
+
+/* Sections */
+section { padding: 104px 0; }
+.intro { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: end; margin-bottom: 64px; }
+.intro p { color: var(--steel); }
+
+/* Platform: ruled rows, not cards */
+.modules { border-top: 2px solid var(--ink); }
+.module { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 40px; padding: 36px 0; border-bottom: 1px solid var(--line); }
+.module h3 span { display: block; font: 400 0.9rem/1.4 var(--body); color: var(--steel); margin-top: 6px; letter-spacing: 0; }
+.module ul { margin: 0; padding: 0; list-style: none; }
+.module li { padding: 7px 0 7px 22px; position: relative; font-size: 0.97rem; }
+.module li::before { content: ""; position: absolute; left: 0; top: 17px; width: 10px; height: 2px; background: var(--steel); }
+
+/* Built for the site */
+.field { background: var(--ink); color: var(--paper); }
+.field h2 { max-width: 20ch; }
+.field .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 64px; border-top: 1px solid #3b4955; }
+.field .col { padding: 32px 32px 0 0; }
+.field .col + .col { padding-left: 32px; border-left: 1px solid #3b4955; }
+.field .col p { color: #b8c3cb; margin-top: 12px; font-size: 0.98rem; }
+.field h3 { color: var(--survey); }
+
+/* Regions */
+.regions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 2px solid var(--ink); }
+.region { padding: 36px 32px 40px; background: var(--paper); }
+.region + .region { border-left: 2px solid var(--ink); }
+.region h3 { font-size: 1.9rem; }
+.region .role { color: var(--steel); font-size: 0.95rem; margin: 6px 0 22px; }
+.region dl { margin: 0; font-size: 0.95rem; }
+.region dt { font-weight: 600; margin-top: 14px; }
+.region dd { margin: 2px 0 0; color: var(--steel); }
+
+/* Compliance strip */
+.standards { padding: 56px 0; background: var(--slab); border-block: 1px solid var(--line); }
+.standards .wrap { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start; }
+.standards ul { display: flex; flex-wrap: wrap; gap: 10px 12px; list-style: none; margin: 0; padding: 0; }
+.standards li { border: 1px solid var(--steel); padding: 8px 14px; font-size: 0.92rem; background: var(--paper); }
+
+/* CTA */
+.cta .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center; }
+.cta p { margin: 22px 0 0; color: var(--steel); }
+.cta form { display: grid; gap: 14px; }
+label { font-size: 0.9rem; font-weight: 600; display: grid; gap: 6px; }
+input, select { font: inherit; padding: 14px; border: 1px solid var(--steel); background: #fff; border-radius: 0; color: var(--ink); }
+input:focus, select:focus { outline: 3px solid var(--survey); outline-offset: 0; border-color: var(--ink); }
+.cta button { cursor: pointer; justify-self: start; }
+
+/* Footer */
+footer { background: var(--ink); color: #b8c3cb; padding: 64px 0 40px; font-size: 0.92rem; }
+footer .top { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 40px; padding-bottom: 48px; }
+footer .brand { color: var(--paper); margin-bottom: 14px; }
+footer h4 { font: 600 0.95rem var(--body); color: var(--paper); margin: 0 0 12px; }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--survey); }
+footer .legal { border-top: 1px solid #3b4955; padding-top: 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .hero .wrap, .intro, .cta .wrap, .standards .wrap { grid-template-columns: 1fr; gap: 36px; }
+  .module { grid-template-columns: 1fr; gap: 16px; }
+  .field .grid, .regions { grid-template-columns: 1fr; }
+  .field .col, .field .col + .col { padding: 28px 0; border-left: 0; border-bottom: 1px solid #3b4955; }
+  .region + .region { border-left: 0; border-top: 2px solid var(--ink); }
+  footer .top { grid-template-columns: 1fr 1fr; }
+  nav { display: none; }
+  section { padding: 72px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .drawing .status::before { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Lintel home">
+      <svg viewBox="0 0 34 22" aria-hidden="true"><rect x="0" y="0" width="34" height="8" fill="#16222c"/><rect x="0" y="8" width="7" height="14" fill="#16222c"/><rect x="27" y="8" width="7" height="14" fill="#16222c"/><rect x="0" y="5" width="34" height="3" fill="#f4c20d"/></svg>
+      Lintel
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#field">On site</a></li>
+        <li><a href="#offices">Offices</a></li>
+        <li><a href="#standards">Standards</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#contact">Book a demo</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Software that carries the load.</h1>
+        <p class="lead">Lintel connects planning, cost control, site work and handover in one system, for builders working across the United States, Europe and Africa.</p>
+        <div class="actions">
+          <a class="btn" href="#contact">Book a demo</a>
+          <a class="btn ghost" href="#platform">See the platform</a>
+        </div>
+      </div>
+
+      <figure class="drawing" style="margin:0">
+        <svg viewBox="0 0 480 360" role="img" aria-label="Building elevation drawing with a Lintel beam highlighted and dimension lines">
+          <g fill="none" stroke="#16222c" stroke-width="2">
+            <path d="M40 320H440"/>
+            <path d="M60 320V90H420V320"/>
+            <path d="M60 170H420M60 245H420" stroke-width="1" stroke="#3a5568"/>
+            <path d="M130 320V250H190V320M290 320V250H350V320" stroke-width="1.5"/>
+            <path d="M120 170V120H200V170M280 170V120H360V170" stroke-width="1.5"/>
+          </g>
+          <rect x="100" y="162" width="120" height="14" fill="#f4c20d" stroke="#16222c" stroke-width="2"/>
+          <g stroke="#16222c" stroke-width="1.5" fill="#16222c">
+            <path d="M160 110V150"/><path d="M154 142L160 154L166 142Z"/>
+            <path d="M130 110V150"/><path d="M124 142L130 154L136 142Z"/>
+            <path d="M190 110V150"/><path d="M184 142L190 154L196 142Z"/>
+          </g>
+          <g stroke="#3a5568" stroke-width="1" fill="none">
+            <path d="M60 346H420M60 340V352M420 340V352"/>
+            <path d="M444 90V320M438 90H450M438 320H450"/>
+          </g>
+          <g font-family="IBM Plex Sans, Arial, sans-serif" font-size="12" fill="#16222c">
+            <text x="240" y="342" text-anchor="middle" fill="#3a5568">18,400 mm</text>
+            <text x="456" y="208" fill="#3a5568" transform="rotate(90 456 208)" text-anchor="middle">9,200 mm</text>
+            <text x="228" y="156">L-204 · RFI 0412 resolved</text>
+            <text x="310" y="238" fill="#3a5568">Level 2 slab: pour approved</text>
+          </g>
+        </svg>
+        <figcaption>
+          <span class="status">Tower B, Level 2 · synced from site</span>
+          <span>Rev. F</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section id="platform">
+    <div class="wrap">
+      <div class="intro">
+        <h2>One system from first estimate to final handover.</h2>
+        <p>Most projects run on five tools that never agree. Lintel keeps drawings, budgets, schedules and site records in a single model, so the office and the site read the same numbers.</p>
+      </div>
+
+      <div class="modules">
+        <article class="module">
+          <h3>Lintel Plan<span>Scheduling and resources</span></h3>
+          <p>Build the programme once and keep it honest. Crews, equipment and deliveries are tied to the schedule, so a delay shows its knock-on effects before it reaches site.</p>
+          <ul>
+            <li>Critical path and look-ahead schedules</li>
+            <li>Crew, plant and material loading</li>
+            <li>Import from Primavera P6 and MS Project</li>
+          </ul>
+        </article>
+        <article class="module">
+          <h3>Lintel Cost<span>Estimating and cost control</span></h3>
+          <p>Estimates become budgets, and budgets track against actual spend as invoices arrive. Variations are priced and approved in the same place they are raised.</p>
+          <ul>
+            <li>Quantity take-off from drawings and models</li>
+            <li>Multi-currency budgets with locked rate dates</li>
+            <li>Change orders, retention and payment certificates</li>
+          </ul>
+        </article>
+        <article class="module">
+          <h3>Lintel Site<span>Field management</span></h3>
+          <p>Daily reports, inspections, snags and RFIs captured on a phone, with or without signal, and attached to the exact drawing location.</p>
+          <ul>
+            <li>Offline-first mobile app</li>
+            <li>Inspections and quality checklists</li>
+            <li>Photo records pinned to drawing coordinates</li>
+          </ul>
+        </article>
+        <article class="module">
+          <h3>Lintel Handover<span>Documents and closeout</span></h3>
+          <p>Every approved drawing, certificate and warranty is filed as the work happens, so closeout is an export rather than a three-month hunt.</p>
+          <ul>
+            <li>As-built and O&amp;M manuals compiled automatically</li>
+            <li>Full audit trail on every document revision</li>
+            <li>Structured data for facilities systems</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="field" class="field">
+    <div class="wrap">
+      <h2>Built for sites where the network is not guaranteed.</h2>
+      <div class="grid">
+        <div class="col">
+          <h3>Works without signal</h3>
+          <p>Site teams keep recording when connectivity drops. Changes merge when the device reconnects, with conflicts shown to a person rather than silently overwritten.</p>
+        </div>
+        <div class="col">
+          <h3>Reads the local rulebook</h3>
+          <p>Metric or imperial, local tax and retention rules, regional units and document conventions are set per project, not per company.</p>
+        </div>
+        <div class="col">
+          <h3>Runs in your region</h3>
+          <p>Choose where project data is stored: United States, European Union or Africa. Support follows the sun from all three offices.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="offices">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Three headquarters. One engineering team.</h2>
+        <p>We are not a US company with a sales desk abroad. Product, engineering and customer teams sit in each region and work on the same roadmap.</p>
+      </div>
+      <div class="regions">
+        <article class="region">
+          <h3>Chicago</h3>
+          <p class="role">Headquarters, North America</p>
+          <dl>
+            <dt>Covers</dt><dd>United States, Canada</dd>
+            <dt>Teams</dt><dd>Platform engineering, enterprise sales</dd>
+            <dt>Contact</dt><dd>americas@lintel.example</dd>
+          </dl>
+        </article>
+        <article class="region">
+          <h3>Rotterdam</h3>
+          <p class="role">Headquarters, Europe</p>
+          <dl>
+            <dt>Covers</dt><dd>EU, United Kingdom, Middle East</dd>
+            <dt>Teams</dt><dd>Compliance, data and security</dd>
+            <dt>Contact</dt><dd>europe@lintel.example</dd>
+          </dl>
+        </article>
+        <article class="region">
+          <h3>Nairobi</h3>
+          <p class="role">Headquarters, Africa</p>
+          <dl>
+            <dt>Covers</dt><dd>East, West, Southern and North Africa</dd>
+            <dt>Teams</dt><dd>Mobile and offline engineering, customer success</dd>
+            <dt>Contact</dt><dd>africa@lintel.example</dd>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div id="standards" class="standards">
+    <div class="wrap">
+      <h3>Security and standards</h3>
+      <ul>
+        <li>ISO 19650 information management</li>
+        <li>SOC 2 Type II</li>
+        <li>ISO 27001</li>
+        <li>GDPR and Kenya Data Protection Act</li>
+        <li>SSO via SAML and OIDC</li>
+        <li>IFC and BCF open formats</li>
+      </ul>
+    </div>
+  </div>
+
+  <section id="contact" class="cta">
+    <div class="wrap">
+      <div>
+        <h2>See your own project in Lintel.</h2>
+        <p>Tell us about a live or upcoming project. We will set up a working demo with your drawings, your currency and your schedule.</p>
+      </div>
+      <form onsubmit="return false">
+        <label>Work email <input type="email" name="email" autocomplete="email" required></label>
+        <label>Company <input type="text" name="company" autocomplete="organization"></label>
+        <label>Region
+          <select name="region">
+            <option>North America</option>
+            <option>Europe</option>
+            <option>Africa</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <button class="btn" type="submit">Request a demo</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <a class="brand" href="#top">Lintel</a>
+        <p>Construction software for builders, developers and owners.</p>
+      </div>
+      <div><h4>Platform</h4><ul><li><a href="#platform">Plan</a></li><li><a href="#platform">Cost</a></li><li><a href="#platform">Site</a></li><li><a href="#platform">Handover</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#offices">Offices</a></li><li><a href="#standards">Security</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="#">Documentation</a></li><li><a href="#">API reference</a></li><li><a href="#">System status</a></li></ul></div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Lintel Systems. All rights reserved.</span>
+      <span><a href="#">Privacy</a> &nbsp; <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
